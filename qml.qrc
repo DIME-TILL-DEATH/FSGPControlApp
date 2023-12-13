@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/">
+        <file>qml/ControlScreen.qml</file>
+        <file>qml/EthSettings.qml</file>
+        <file>qml/Main.qml</file>
+    </qresource>
+</RCC>

@@ -1,16 +1,9 @@
-import QtQuick
-import QtQuick.Controls
-import QtQuick.Layouts
+import QtQuick 2.15
+import QtQuick.Controls 2.15
 
-import CppObjects
+import CppObjects 1.0
 
 Item {
-    function setPsFromCb()
-    {
-        var value = [_cb0.checked, _cb1.checked, _cb2.checked, _cb3.checked, _cb4.checked, _cb5.checked]
-        CtrlGui.setPhaseShifter(value);
-    }
-
     Column{
         anchors.fill: parent
         anchors.margins: width/50
@@ -30,68 +23,21 @@ Item {
 
                 Label{
                     anchors.horizontalCenter: parent.horizontalCenter
-                    text: "Установки фильтров:"
+                    text: "Код частоты:"
                 }
 
-                ComboBox{
-                    id: _comboFilter
+                SpinBox{
+                    id: _nkchSpinBox
 
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    model: ["00", "01", "10", "11"]
+                    from: 1
+                    to: 45
 
-                    onAccepted: {
-                        filterCode = currentIndex
-                    }
-                }
-            }
+                    editable: true
 
-        }
-
-        Rectangle{
-            height: parent.height*0.3
-            width: parent.width
-
-            radius: width/50
-            border.width: 1
-            Column{
-                anchors.horizontalCenter: parent.horizontalCenter
-                anchors.verticalCenter: parent.verticalCenter
-                anchors.margins: width/5
-                spacing: height/10
-
-                GroupBox {
-                    title: qsTr("Установки фазовращателя:")
-
-                    anchors.horizontalCenter: parent.horizontalCenter
-
-                    RowLayout {
-                        id: _checkGroup
-
-                        anchors.fill: parent
-                        CheckBox { id: _cb0; text: "5,625°" }
-                        CheckBox { id: _cb1; text: "11,25°" }
-                        CheckBox { id: _cb2; text: "22,5°" }
-                        CheckBox { id: _cb3; text: "45°" }
-                        CheckBox { id: _cb4; text: "90°" }
-                        CheckBox { id: _cb5; text: "180°" }
-                    }
-
-                    ButtonGroup{
-                        buttons: _checkGroup.children
-                        exclusive: false
-
-                        onClicked: {
-                            setPsFromCb();
-                        }
-                    }
-
-                }
-
-                Label{
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    text: "Установленное значение: " + CtrlGui.phaseCode * 5.625 + "°"
+                    //inputMethodHints: Qt.ImhDigitsOnly
                 }
             }
+
         }
 
         Rectangle{
@@ -137,8 +83,8 @@ Item {
                 text: "Запись"
 
                 onClicked: {
-                    CtrlGui.filterCode = _comboFilter.currentIndex;
-                    setPsFromCb();
+                    CtrlGui.NKCH = _nkchSpinBox.value;
+
                     CtrlGui.sendFrame()
 
                     _labelFrameSend.text = Qt.formatTime(new Date(), "hh:mm:ss") + " <== Кадр отправлен";

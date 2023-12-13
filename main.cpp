@@ -21,16 +21,16 @@ int main(int argc, char *argv[])
     EthCore::connect(&ethCore, &EthCore::sgItfConnected, &ethGui, &EthGui::slItfConnected);
     EthCore::connect(&ethCore, &EthCore::sgAckRecieved, &ctrlGui, &ControlGui::sgAckRecieved);
 
-    ControlGui::connect(&ctrlGui, &ControlGui::sgSenRawCommFrame, &ethCore, &EthCore::senRawCommFrame);
+    ControlGui::connect(&ctrlGui, &ControlGui::sgSendCommFrame, &ethCore, &EthCore::sendCommFrame);
 
     qmlRegisterSingletonInstance("CppObjects", 1, 0, "EthGui", &ethGui);
     qmlRegisterSingletonInstance("CppObjects", 1, 0, "CtrlGui", &ctrlGui);
 
     QQmlApplicationEngine engine;
-    const QUrl url(u"qrc:/FSGPControlApp/qml/Main.qml"_qs);
-    QObject::connect(&engine, &QQmlApplicationEngine::objectCreationFailed,
-        &app, []() { QCoreApplication::exit(-1); },
-        Qt::QueuedConnection);
+    const QUrl url("qrc:/qml/Main.qml");
+//    QObject::connect(&engine, &QQmlApplicationEngine::objectCreationFailed,
+//        &app, []() { QCoreApplication::exit(-1); },
+//        Qt::QueuedConnection);
     engine.load(url);
 
     return app.exec();

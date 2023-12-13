@@ -1,23 +1,23 @@
-#ifndef UPPM_H
-#define UPPM_H
+#ifndef FSGP_H
+#define FSGP_H
 
 #include <stdint.h>
 #include <QHostAddress>
 
-#include "uppm_raw_comm_frame.h"
+#include "fsgp_command_frame.h"
 
-class UPPM
+class FSGP
 {
 public:
-    UPPM();
+    FSGP();
 
     static constexpr uint16_t controlPort = 40003;                                       //destination ports
     static constexpr uint16_t fdkPort = 40002;                                        //source port
-    static constexpr uint16_t ackPort = 40005;
+    static constexpr uint16_t ackPort = 40004;
 
     QHostAddress ipAddr() const;
 
-    static QByteArray formRawCommFrame(UPPM_Raw_Command_Frame& data);
+    static QByteArray formCommFrame(FSGP_Command_Frame& data);
 
     void setIpAddr(const QHostAddress &newIpAddr);
 
@@ -25,4 +25,4 @@ private:
     QHostAddress m_ipAddr;
 };
 
-#endif // UPPM_H
+#endif // FSGP_H

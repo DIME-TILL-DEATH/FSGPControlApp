@@ -4,7 +4,7 @@
 #include <QObject>
 #include <QUdpSocket>
 
-#include "uppm.h"
+#include "fsgp.h"
 
 class EthCore : public QObject
 {
@@ -12,8 +12,8 @@ class EthCore : public QObject
 public:
     explicit EthCore(QObject *parent = nullptr);
 
-    void senRawCommFrame(UPPM_Raw_Command_Frame frameData);
-    qint64 writeData(const UPPM& targetUPPM, QByteArray msg);
+    void sendCommFrame(FSGP_Command_Frame frameData);
+    qint64 writeData(const FSGP& targetUPPM, QByteArray msg);
 
     void setHostAddress(QHostAddress ipAddr);
     void setDstIp(QHostAddress ipAddr);
@@ -25,12 +25,14 @@ signals:
 
 private:
     QUdpSocket* udpSocket;
-    UPPM targetPPM;
+    FSGP targetFSGP;
 
     void readPendingDatagrams();
 
     QHostAddress m_dstAddress;
     quint16 m_dstPort;
+
+    quint32 index{0};
 };
 
 #endif // ETHCORE_H

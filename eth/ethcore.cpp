@@ -1,6 +1,6 @@
 #include <QNetworkDatagram>
 
-#include "uppm.h"
+#include "fsgp.h"
 #include "ethcore.h"
 
 EthCore::EthCore(QObject *parent)
@@ -11,14 +11,18 @@ EthCore::EthCore(QObject *parent)
     connect(udpSocket, &QUdpSocket::readyRead, this, &EthCore::readPendingDatagrams);
 }
 
-void EthCore::senRawCommFrame(UPPM_Raw_Command_Frame frameData)
+void EthCore::sendCommFrame(FSGP_Command_Frame frameData)
 {
-    targetPPM.setIpAddr(m_dstAddress);
+    targetFSGP.setIpAddr(m_dstAddress);
 
-    writeData(targetPPM, UPPM::formRawCommFrame(frameData));
+    frameData.TVRS = index;
+    frameData.index = index;
+    
+    writeData(targetFSGP, FSGP::formCommFrame(frameData));
+    index++;
 }
 
-qint64 EthCore::writeData(const UPPM& targetUPPM, QByteArray msg)
+qint64 EthCore::writeData(const FSGP& targetUPPM, QByteArray msg)
 {
     qint16 sendedBytes = udpSocket->writeDatagram(msg, targetUPPM.ipAddr(), targetUPPM.controlPort);
 
@@ -29,7 +33,7 @@ qint64 EthCore::writeData(const UPPM& targetUPPM, QByteArray msg)
 void EthCore::setHostAddress(QHostAddress ipAddr)
 {
     udpSocket->close();
-    bool result = udpSocket->bind(ipAddr, UPPM::ackPort);
+    bool result = udpSocket->bind(ipAddr, FSGP::ackPort);
 
     emit sgItfConnected(result);
 }
@@ -53,6 +57,6 @@ void EthCore::readPendingDatagrams()
         FrameHeader frameHeader;
         memcpy(frameHeader.rawData, datagram.data().data(), FRAME_HEADER_SIZE);
 
-        if(frameHeader.structData.TK == UPPM_RAW_ACK_COMM_FRAME) emit sgAckRecieved();
+        if(frameHeader.structData.TK == FSGP_ACK_FRAME) emit sgAckRecieved();
     }
 }

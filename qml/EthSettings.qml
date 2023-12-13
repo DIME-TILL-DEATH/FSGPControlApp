@@ -1,8 +1,7 @@
-import QtQuick
-import QtQuick.Controls
-import QtQuick.Layouts
+import QtQuick 2.15
+import QtQuick.Controls 2.15
 
-import CppObjects
+import CppObjects 1.0
 
 Item {
     function acceptChanges()
@@ -105,7 +104,7 @@ Item {
 
                 TextField{
                     id: _dstIpField
-                    text: "10.0.0.151"
+                    text: "10.0.0.121"
                 }
 
                 Label{
