@@ -18,15 +18,14 @@ QByteArray FSGP::formCommFrame(FSGP_Command_Frame &data)
 
     FrameHeader frameHeader{0};
 
-    uint16_t outDataLen = sizeof(FrameHeader) + sizeof(DatagramHeader) + sizeof(FSGP_Command_Frame); //112;
+    quint16 outDataLen = sizeof(FrameHeader) + sizeof(DatagramHeader) + sizeof(FSGP_Command_Frame); //112;
 
     frameHeader.structData.signature = qToBigEndian<quint16>(FRAME_SIGNATURE);
     frameHeader.structData.RTK = 0;
     frameHeader.structData.TK = FSGP_COMMAND_FRAME;
-    frameHeader.structData.RK = qToBigEndian(outDataLen);
-    frameHeader.structData.RF128 = qToBigEndian(outDataLen/16);
-    frameHeader.structData.PF = 1;
-    frameHeader.structData.SCH = 0;
+    frameHeader.structData.RK = qToBigEndian(outDataLen - FRAME_HEADER_SIZE);
+    frameHeader.structData.RF128_PF = qToBigEndian<quint16>(outDataLen/16 | (1<<15));
+    frameHeader.structData.SCH = (data.index & 0xFFFF0000) >> 16;
     frameHeader.structData.NF = 0;
 
     rawFrame.append((const char*)&(frameHeader.rawData[0]), FRAME_HEADER_SIZE);
@@ -36,7 +35,7 @@ QByteArray FSGP::formCommFrame(FSGP_Command_Frame &data)
     datagramHeader.structData.LAYOUT = 4;
     datagramHeader.structData.LAYOUT_SIZE128 = 3;
     datagramHeader.structData.RTK = 0;
-    datagramHeader.structData.TK = UPPM_RAW_COMMAND_FRAME;
+    datagramHeader.structData.TK = FSGP_COMMAND_FRAME;
     datagramHeader.structData.RK = qToBigEndian(outDataLen - FRAME_HEADER_SIZE);
 
     datagramHeader.structData.CTRL_OFFSET128 = qToBigEndian(FSGP_COMM_FRAME_CTRL_OFFSET128);

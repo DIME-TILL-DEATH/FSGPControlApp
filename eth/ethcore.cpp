@@ -1,4 +1,5 @@
 #include <QNetworkDatagram>
+#include <qendian.h>
 
 #include "fsgp.h"
 #include "ethcore.h"
@@ -14,9 +15,11 @@ EthCore::EthCore(QObject *parent)
 void EthCore::sendCommFrame(FSGP_Command_Frame frameData)
 {
     targetFSGP.setIpAddr(m_dstAddress);
+    targetFSGP.controlPort = m_dstPort;
 
-    frameData.TVRS = index;
-    frameData.index = index;
+
+    frameData.TVRS = qToBigEndian<quint32>(index);
+    frameData.index = qToBigEndian<quint32>(index);
     
     writeData(targetFSGP, FSGP::formCommFrame(frameData));
     index++;

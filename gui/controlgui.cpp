@@ -16,18 +16,28 @@ void ControlGui::sendFrame()
     frame.NKCH = m_NKCH;
     frame.SBR_OCH = m_SBR_OCH;
     frame.REG = m_REG;
-    frame.PS = m_PS;
     frame.CDO = m_CDO;
     frame.PBL = m_PBL;
     frame.PF = m_PF;
     frame.AKP = m_AKP;
     frame.EKV = m_EKV;
-    frame.ZI = m_ZI;
-    frame.OSL_PS = m_OSL_PS;
+    frame.NLCHM = m_NLCHM;
 
-    qDebug() << "НКЧ: " << frame.NKCH;
+    // Пилот
+    frame.PS = m_PS;
+    frame.TipPS = m_PS_type;
+    frame.OslableniePS = m_PS_oslablenie;
+    frame.PolosaPS = m_PS_polosa;
+    frame.PnfPS = m_PS_pnf_PS;
+    frame.DalnostPS = m_PS_dalnost;
+    frame.SkorostPS = m_PS_skorost;
+
+    qDebug() << "НКЧ: " << frame.NKCH << "КП:" << frame.KP << "Наклон:" << frame.NLCHM;
+    qDebug() << "Тип ПС: " << frame.TipPS << "полоса ПС:" << frame.PolosaPS;
 
     emit sgSendCommFrame(frame);
+    // emit sgSendCommFrame(frame);
+    // emit sgSendCommFrame(frame);
 }
 
 quint8 ControlGui::KP() const
@@ -105,7 +115,7 @@ void ControlGui::setPS(bool newPS)
     if (m_PS == newPS)
         return;
     m_PS = newPS;
-    emit PSChanged();
+    emit PS_changed();
 }
 
 bool ControlGui::CDO() const
@@ -186,15 +196,93 @@ void ControlGui::setZI(quint8 newZI)
     emit ZIChanged();
 }
 
-quint8 ControlGui::OSL_PS() const
+quint8 ControlGui::PS_oslablenie() const
 {
-    return m_OSL_PS;
+    return m_PS_oslablenie;
 }
 
-void ControlGui::setOSL_PS(quint8 newOSL_PS)
+void ControlGui::setPS_oslablenie(quint8 newPS_oslablenie)
 {
-    if (m_OSL_PS == newOSL_PS)
+    if (m_PS_oslablenie == newPS_oslablenie)
         return;
-    m_OSL_PS = newOSL_PS;
-    emit OSL_PSChanged();
+    m_PS_oslablenie = newPS_oslablenie;
+    emit PS_changed();
+}
+
+quint8 ControlGui::PS_type() const
+{
+    return m_PS_type;
+}
+
+void ControlGui::setPS_type(quint8 newPS_type)
+{
+    if (m_PS_type == newPS_type)
+        return;
+    m_PS_type = newPS_type;
+    emit PS_changed();
+}
+
+quint8 ControlGui::PS_polosa() const
+{
+    return m_PS_polosa;
+}
+
+void ControlGui::setPS_polosa(quint8 newPS_polosa)
+{
+    if (m_PS_polosa == newPS_polosa)
+        return;
+    m_PS_polosa = newPS_polosa;
+    emit PS_changed();
+}
+
+bool ControlGui::PS_pnf_PS() const
+{
+    return m_PS_pnf_PS;
+}
+
+void ControlGui::setPS_pnf_PS(bool newPS_pnf_PS)
+{
+    if (m_PS_pnf_PS == newPS_pnf_PS)
+        return;
+    m_PS_pnf_PS = newPS_pnf_PS;
+    emit PS_changed();
+}
+
+quint16 ControlGui::PS_dalnost() const
+{
+    return m_PS_dalnost;
+}
+
+void ControlGui::setPS_dalnost(quint16 newPS_dalnost)
+{
+    if (m_PS_dalnost == newPS_dalnost)
+        return;
+    m_PS_dalnost = newPS_dalnost;
+    emit PS_changed();
+}
+
+quint16 ControlGui::PS_skorost() const
+{
+    return m_PS_skorost;
+}
+
+void ControlGui::setPS_skorost(quint16 newPS_skorost)
+{
+    if (m_PS_skorost == newPS_skorost)
+        return;
+    m_PS_skorost = newPS_skorost;
+    emit PS_changed();
+}
+
+bool ControlGui::NLCHM() const
+{
+    return m_NLCHM;
+}
+
+void ControlGui::setNLCHM(bool newNLCHM)
+{
+    if (m_NLCHM == newNLCHM)
+        return;
+    m_NLCHM = newNLCHM;
+    emit NLCHMChanged();
 }

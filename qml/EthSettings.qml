@@ -7,6 +7,8 @@ Item {
     function acceptChanges()
     {
         var conversionResult = EthGui.setDstIp(_dstIpField.text);
+        EthGui.setDstPort(_portField.text);
+
         if(conversionResult) EthGui.selectItf(_itfList.selectedItfName);
     }
 
@@ -112,8 +114,10 @@ Item {
                 }
 
                 TextField{
-                    text: "40003"
-                    enabled: false
+                    id: _portField
+                    text: "20003"
+                    // enabled: false
+                    validator: IntValidator{bottom: 0; top:65000;}
                 }
             }
         }

@@ -6,7 +6,7 @@ import CppObjects 1.0
 
 Window {
     width: 800
-    height: 600
+    height: 700
     visible: true
     title: qsTr("FSGP Control")
 

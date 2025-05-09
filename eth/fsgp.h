@@ -11,9 +11,9 @@ class FSGP
 public:
     FSGP();
 
-    static constexpr uint16_t controlPort = 40003;                                       //destination ports
-    static constexpr uint16_t fdkPort = 40002;                                        //source port
-    static constexpr uint16_t ackPort = 40004;
+    uint16_t controlPort = 40003;
+    uint16_t fdkPort = 40002;
+    static constexpr uint16_t ackPort = 20004;
 
     QHostAddress ipAddr() const;
 

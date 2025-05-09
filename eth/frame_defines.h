@@ -32,18 +32,21 @@
 
 typedef struct
 {
+    //word0, [32:0]
     uint16_t signature;
     uint8_t RTK;
     uint8_t TK;
 
+    //word1
     uint32_t RK;
 
-    uint8_t SCH;
+    //word2
+    uint16_t SCH;
 
-    uint8_t PF          :1;
-    uint8_t reserved1   :7;
 
-    uint16_t RF128;
+    uint16_t RF128_PF;
+
+    //word3
     uint32_t NF;
 }Frame_Header_Struct;
 
